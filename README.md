@@ -33,6 +33,53 @@ This example models passengers waiting to board wagons. Separate passenger and w
 
 The station selects passengers in queue order and grants departure permission once all selected passengers have reported boarding.
 
+## How to run
+
+### Seminar 1 — UDP communication
+
+Configure `HOST` and `PORT` in `Seminar_1/udp_client.py` to point to a running UDP server that replies to messages, then run:
+
+```bash
+python Seminar_1/udp_client.py
+```
+The UDP server is not included in this repository.
+
+### Seminar 2 — RPC-based coordination
+
+Run each command in a **separate terminal**, starting from the repository's root folder. This example runs all processes on the same computer.
+
+1. Start the station server:
+
+   ```bash
+   python Seminar_2/station_server.py
+   ```
+
+2. Start a wagon with two seats:
+
+   ```bash
+   python Seminar_2/wagon_node.py --station http://localhost:8000 --wagon 1 --seats 2
+   ```
+
+3. Start the first passenger:
+
+   ```bash
+   python Seminar_2/passenger_node.py --station http://localhost:8000 --person 1
+   ```
+
+4. Start the second passenger:
+
+   ```bash
+   python Seminar_2/passenger_node.py --station http://localhost:8000 --person 2
+   ```
+
+Once both passengers have boarded, the wagon departs, simulates a ride, and allows them to get off. The wagon then waits for more passengers.
+
+Use a unique `--person` ID for each new passenger. Press **Ctrl+C** in each terminal to stop the running processes.
+
+To run across multiple computers, replace `localhost` in the client commands with the station computer's IP address. The clients must be able to reach its port `8000`.
+
+If your system uses `python3` as its Python command, use that instead of `python`.
+
 ## Requirements
 
 - Python 3.
