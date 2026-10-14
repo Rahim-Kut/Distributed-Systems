@@ -1,7 +1,7 @@
 import socket as sk
 import time
 
-HOST = '158.174.211.54'
+HOST = '127.0.0.1'  # Replace with your server's IP address
 PORT = 2001
 
 COUNT   = 300     # number of messages
