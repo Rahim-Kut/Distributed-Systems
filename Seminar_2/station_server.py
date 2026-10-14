@@ -76,6 +76,9 @@ def say_i_got_off(person_id, wagon_id):
 
 # Wagon side
 def wagon_arrived(wagon_id, capacity):
+    # Ignore repeat registration: finished wagons are already requeued.
+    if any(queued_id == wagon_id for queued_id, _ in wagon_queue):
+        return True
     wagon_queue.append((wagon_id, capacity))
     _try_to_fill_front_wagon()
     return True
@@ -88,6 +91,7 @@ def ride_finished(wagon_id):
     info = trip.get(wagon_id)
     if not info:
         return False
+    info["can_depart"] = False
     # Allow the chosen people to get off
     for pid in info["chosen_people"]:
         info["may_get_off"][pid] = True
